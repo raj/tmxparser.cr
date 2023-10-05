@@ -1,25 +1,42 @@
 module Tmxparser
   class Map
     property version : String
+    property tiledversion : String?
+    property map_class : String?
     property orientation : String
-    property tilewidth : Int32
-    property tileheight : Int32
+    property renderorder : RenderOrder
+    property compressionlevel : Int32?
     property width : Int32
     property height : Int32
-    property layers : Array(Hash(String, String))
+    property tilewidth : Int32
+    property tileheight : Int32
+    property hexsidelength : Int32?
+    property staggeraxis : String?
+    property staggerindex : String?
+    property parallaxoriginx : Int32
+    property parallaxoriginy : Int32
+    property backgroundcolor : String?
+    property nextlayerid : Int32?
+    property nextobjectid : Int32?
+    property infinite : Bool
     property properties : Array(Hash(String, String))
     property tilesets : Array(Tileset)
+    property layers : Array(Layer)
 
     def initialize
       @version = ""
+      @renderorder = RenderOrder::RightDown
       @orientation = ""
       @tilewidth = 0
       @tileheight = 0
       @width = 0
       @height = 0
-      @layers = [] of Hash(String, String)
+      @parallaxoriginx = 0
+      @parallaxoriginy = 0
+      @infinite = false
       @properties = [] of Hash(String, String)
       @tilesets = [] of Tileset
+      @layers = [] of Layer
     end
 
     def self.load_from_xml(xml)
@@ -39,11 +56,16 @@ module Tmxparser
       map.properties = map_properties.map do |property|
         {property.attributes["name"].text => property.attributes["value"].text}
       end
+
       map_tilesets = document.xpath_nodes("//map/tileset").not_nil!
-      # puts map_prs
       map.tilesets = map_tilesets.map do |tileset|
         Tileset.from_xml(tileset)
       end
+
+      # map_layers = document.xpath_nodes("//map/layer").not_nil!
+      # map.layers = map_layers.map do |layer|
+      #   Layer.from_xml(layer)
+      # end
 
       puts "version : #{map.version}"
       puts "orientation : #{map.orientation}"
