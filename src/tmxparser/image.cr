@@ -1,5 +1,5 @@
 module Tmxparser
-  class Image
+  struct Image
     property source : String
     property width : Int32
     property height : Int32

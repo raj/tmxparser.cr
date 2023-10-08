@@ -1,5 +1,5 @@
 module Tmxparser
-  class LayerData
+  struct LayerData
     property encoding : String
     property compression : String
     property data : String

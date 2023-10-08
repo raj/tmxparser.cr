@@ -1,5 +1,5 @@
 module Tmxparser
-  class Map
+  struct Map
     property version : String
     property tiledversion : String?
     property map_class : String?
@@ -39,7 +39,7 @@ module Tmxparser
       @layers = [] of Layer
     end
 
-    def self.load_from_xml(xml)
+    def self.load_from_xml(xml : String) : Map
       document = XML.parse(xml)
       map_prs = document.xpath_nodes("//map").not_nil!
       
@@ -51,7 +51,7 @@ module Tmxparser
       map.tileheight = map_prs.first.attributes["tileheight"].text.to_i
       map.width = map_prs.first.attributes["width"].text.to_i
       map.height = map_prs.first.attributes["height"].text.to_i
-
+      
       map_properties = document.xpath_nodes("//map/properties/property").not_nil!
       map.properties = map_properties.map do |property|
         {property.attributes["name"].text => property.attributes["value"].text}

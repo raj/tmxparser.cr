@@ -1,5 +1,5 @@
 module Tmxparser
-  class Layer
+  struct Layer
     property name : String
     property width : Int32
     property height : Int32
