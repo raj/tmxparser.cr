@@ -7,6 +7,8 @@ module Tmxparser::Parser
       firstgid = xml["firstgid"].to_i
       all_attributes = xml.attributes.map { |a| a.name }
       with_external_source = all_attributes.index("source")
+
+      tileset_class = all_attributes.index("class") ? xml["class"] : ""
       
       if with_external_source
         source = xml["source"]
@@ -31,7 +33,7 @@ module Tmxparser::Parser
         spacing: spacing,
         margin: margin,
         images: tileset_images || [] of Tmxparser::Image,
-        tileset_class: "Tileset",
+        tileset_class: tileset_class,
         tilecount: 0,
         columns: 0,
       )

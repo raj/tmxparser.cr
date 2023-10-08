@@ -9,6 +9,7 @@ describe Tmxparser do
 
   describe "#load" do
     it "load from file" do
+      # maps = ["spec/fixtures/map_xml.tmx", "spec/fixtures/map-source-tileset.tmx"]
       maps = ["spec/fixtures/map_xml.tmx", "spec/fixtures/map-source-tileset.tmx"]
       maps.each do |map|
         tmx = Tmxparser.load_xml(map)
