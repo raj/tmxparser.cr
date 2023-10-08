@@ -9,3 +9,4 @@ module Tmxparser
     Tmxparser::Map.load_from_xml(File.read(path))
   end
 end
+
