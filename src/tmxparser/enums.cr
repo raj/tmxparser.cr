@@ -42,4 +42,36 @@ module Tmxparser
       end
     end
   end
+
+  enum StaggerAxis
+    X
+    Y
+
+    def self.from_s(s : String) : StaggerAxis
+      case s
+      when "x"
+        X
+      when "y"
+        Y
+      else
+        raise "Unknown stagger axis: #{s}"
+      end
+    end
+  end
+
+  enum StaggerIndex
+    Even
+    Odd
+
+    def self.from_s(s : String) : StaggerIndex
+      case s
+      when "even"
+        Even
+      when "odd"
+        Odd
+      else
+        raise "Unknown stagger index: #{s}"
+      end
+    end
+  end
 end

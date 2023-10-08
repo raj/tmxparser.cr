@@ -5,20 +5,74 @@ module Tmxparser::Parser
   struct Map
     def self.load_from_xml(map_xml : String) : Tmxparser::Map
       document = XML.parse(map_xml)
-      map_prs = document.xpath_nodes("//map").not_nil!
-      all_map_attributes = map_prs.first.attributes.map{|k| k.name}
+      node = document.xpath_nodes("//map").not_nil!
+      all_map_attributes = node.first.attributes.map{|k| k.name}
       puts "all_map_attributes : #{all_map_attributes}" 
 
-      orientation = map_prs.first.attributes["orientation"].text
-      version = map_prs.first.attributes["version"].text
-      tilewidth = map_prs.first.attributes["tilewidth"].text.to_i
-      tileheight = map_prs.first.attributes["tileheight"].text.to_i
-      width = map_prs.first.attributes["width"].text.to_i
-      height = map_prs.first.attributes["height"].text.to_i
+      version = node.first.attributes["version"].text
       
-      render_order = 
-        all_map_attributes.includes?("renderorder") ? map_prs.first.attributes["renderorder"].text 
-        : "right-down"
+      tiledversion = 
+        all_map_attributes.includes?("tiledversion") ? node.first.attributes["tiledversion"].text
+        : "0.0.0"
+      
+      orientation = Orientation.from_s node.first.attributes["orientation"].text
+      
+      renderorder = 
+        all_map_attributes.includes?("renderorder") ? 
+        RenderOrder.from_s node.first.attributes["renderorder"].text 
+        : RenderOrder.from_s "right-down"
+
+      compressionlevel = 
+        all_map_attributes.includes?("compressionlevel") ? node.first.attributes["compressionlevel"].text.to_i 
+        : nil
+        
+      tilewidth = node.first.attributes["tilewidth"].text.to_i
+      tileheight = node.first.attributes["tileheight"].text.to_i
+      width = node.first.attributes["width"].text.to_i
+      height = node.first.attributes["height"].text.to_i
+      
+      hexsidelength = 
+        all_map_attributes.includes?("hexsidelength") ? node.first.attributes["hexsidelength"].text.to_i 
+        : nil
+
+      staggeraxis = 
+        all_map_attributes.includes?("staggeraxis") ? 
+        StaggerAxis.from_s node.first.attributes["staggeraxis"].text
+        : nil
+      
+      staggerindex =
+        all_map_attributes.includes?("staggerindex") ? 
+        StaggerIndex.from_s node.first.attributes["staggerindex"].text
+        : nil
+
+      parallaxoriginx = 
+        all_map_attributes.includes?("parallaxoriginx") ? node.first.attributes["parallaxoriginx"].text.to_i 
+        : 0
+    
+      parallaxoriginy = 
+        all_map_attributes.includes?("parallaxoriginy") ? 
+        node.first.attributes["parallaxoriginy"].text.to_i 
+        : 0
+
+      backgroundcolor = 
+        all_map_attributes.includes?("backgroundcolor") ? 
+        node.first.attributes["backgroundcolor"].text 
+        : "#000000"
+
+      nextlayerid = 
+        all_map_attributes.includes?("nextlayerid") ? 
+        node.first.attributes["nextlayerid"].text.to_i 
+        : 1
+      
+      nextobjectid = 
+        all_map_attributes.includes?("nextobjectid") ? 
+        node.first.attributes["nextobjectid"].text.to_i 
+        : 1
+
+      infinite =
+        all_map_attributes.includes?("infinite") ? 
+        node.first.attributes["infinite"].text.to_i == 0 ? false : true
+        : false
 
       properties = document
         .xpath_nodes("//map/properties/property")
@@ -42,25 +96,25 @@ module Tmxparser::Parser
         end
 
       Tmxparser::Map.new(
-        version: map_prs.first.attributes["version"].text,
-        tiledversion: "1.0.0",
+        version: node.first.attributes["version"].text,
+        tiledversion: tiledversion,
         map_class: "map",
-        orientation: Orientation.from_s(orientation),
-        renderorder: RenderOrder.from_s(render_order),
-        compressionlevel: 0,
+        orientation: orientation,
+        renderorder: renderorder,
+        compressionlevel: compressionlevel,
         width: width,
         height: height,
         tilewidth: tilewidth,
         tileheight: tileheight,
-        hexsidelength: 0,
-        staggeraxis: "y",
-        staggerindex: "odd",
-        parallaxoriginx: 0,
-        parallaxoriginy: 0,
-        backgroundcolor: "#000000",
-        nextlayerid: 1,
-        nextobjectid: 1,
-        infinite: false,
+        hexsidelength: hexsidelength,
+        staggeraxis: staggeraxis,
+        staggerindex: staggerindex,
+        parallaxoriginx: parallaxoriginx,
+        parallaxoriginy: parallaxoriginy,
+        backgroundcolor: backgroundcolor,
+        nextlayerid: nextlayerid,
+        nextobjectid: nextobjectid,
+        infinite: infinite,
         properties: properties,
         tilesets: tilesets,
         layers: layers

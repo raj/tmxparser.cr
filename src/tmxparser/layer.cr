@@ -7,11 +7,12 @@ module Tmxparser
     property height : Int32
     property layer_data : LayerData?
 
-    def initialize(name, width, height, data)
-      @name = name
-      @width = width
-      @height = height
-      @layer_data = data
+    def initialize(
+      @name,
+      @width,
+      @height,
+      @layer_data
+    )
     end
   end
 end

@@ -1,7 +1,7 @@
 module Tmxparser::Parser
   struct LayerData
 
-    def self.from_xml(element)
+    def self.from_xml(element : XML::Node)
       encoding = element.attributes["encoding"].text
       compression = element.attributes["compression"].text
       data = element.text

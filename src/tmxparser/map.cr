@@ -17,8 +17,8 @@ module Tmxparser
     property tilewidth : Int32
     property tileheight : Int32
     property hexsidelength : Int32?
-    property staggeraxis : String?
-    property staggerindex : String?
+    property staggeraxis : StaggerAxis?
+    property staggerindex : StaggerIndex?
     property parallaxoriginx : Int32
     property parallaxoriginy : Int32
     property backgroundcolor : String?
