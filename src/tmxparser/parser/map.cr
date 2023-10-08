@@ -6,7 +6,9 @@ module Tmxparser::Parser
     def self.load_from_xml(map_xml : String) : Tmxparser::Map
       document = XML.parse(map_xml)
       map_prs = document.xpath_nodes("//map").not_nil!
-      
+      all_map_attributes = map_prs.first.attributes.map{|k| k.name}
+      puts "all_map_attributes : #{all_map_attributes}" 
+
       orientation = map_prs.first.attributes["orientation"].text
       version = map_prs.first.attributes["version"].text
       tilewidth = map_prs.first.attributes["tilewidth"].text.to_i
@@ -14,6 +16,10 @@ module Tmxparser::Parser
       width = map_prs.first.attributes["width"].text.to_i
       height = map_prs.first.attributes["height"].text.to_i
       
+      render_order = 
+        all_map_attributes.includes?("renderorder") ? map_prs.first.attributes["renderorder"].text 
+        : "right-down"
+
       properties = document
         .xpath_nodes("//map/properties/property")
         .not_nil!
@@ -39,8 +45,8 @@ module Tmxparser::Parser
         version: map_prs.first.attributes["version"].text,
         tiledversion: "1.0.0",
         map_class: "map",
-        orientation: orientation,
-        renderorder: RenderOrder::RightDown,
+        orientation: Orientation.from_s(orientation),
+        renderorder: RenderOrder.from_s(render_order),
         compressionlevel: 0,
         width: width,
         height: height,

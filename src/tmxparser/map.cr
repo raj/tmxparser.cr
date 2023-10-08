@@ -9,7 +9,7 @@ module Tmxparser
     property version : String
     property tiledversion : String?
     property map_class : String?
-    property orientation : String
+    property orientation : Orientation
     property renderorder : RenderOrder
     property compressionlevel : Int32? # nil means -1
     property width : Int32
