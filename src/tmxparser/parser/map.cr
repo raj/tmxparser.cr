@@ -3,7 +3,7 @@ require "./tileset"
 
 module Tmxparser::Parser
   struct Map
-    def self.load_from_xml(map_xml : String) : Tmxparser::Map
+    def self.load_from_xml(map_xml : String, path : String) : Tmxparser::Map
       document = XML.parse(map_xml)
       node = document.xpath_nodes("//map").not_nil!
       all_map_attributes = node.first.attributes.map { |k| k.name }
@@ -65,7 +65,7 @@ module Tmxparser::Parser
         .xpath_nodes("//map/tileset")
         .not_nil!
         .map do |tileset|
-          Tmxparser::Parser::Tileset.from_xml(tileset)
+          Tmxparser::Parser::Tileset.from_xml(tileset, path)
         end
 
       layers = document
