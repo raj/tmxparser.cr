@@ -1,6 +1,6 @@
 require "json"
 require "xml"
-require "./tmxparser/*"
+require "./tmxparser/map"
 
 module Tmxparser
   VERSION = "0.1.0"

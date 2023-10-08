@@ -9,12 +9,5 @@ module Tmxparser
       @width = width
       @height = height
     end
-
-    def self.from_xml(element)
-      source = element.attributes["source"].text
-      width = element.attributes["width"].text.to_i
-      height = element.attributes["height"].text.to_i
-      Image.new(source, width, height)
-    end
   end
 end

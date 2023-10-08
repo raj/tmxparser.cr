@@ -1,4 +1,8 @@
 require "./parser/map"
+require "./tileset"
+require "./image"
+require "./layer"
+require "./enums"
 
 module Tmxparser
   struct Map
@@ -6,7 +10,7 @@ module Tmxparser
     property tiledversion : String?
     property map_class : String?
     property orientation : String
-    property renderorder : String
+    property renderorder : RenderOrder
     property compressionlevel : Int32? # nil means -1
     property width : Int32
     property height : Int32
@@ -25,20 +29,30 @@ module Tmxparser
     property tilesets : Array(Tileset)
     property layers : Array(Layer)
 
-    def initialize
-      @version = ""
-      @renderorder = "right-down"
-      @orientation = ""
-      @tilewidth = 0
-      @tileheight = 0
-      @width = 0
-      @height = 0
-      @parallaxoriginx = 0
-      @parallaxoriginy = 0
-      @infinite = false
-      @properties = [] of Hash(String, String)
-      @tilesets = [] of Tileset
-      @layers = [] of Layer
+    def initialize(
+      @version,
+      @tiledversion,
+      @map_class,
+      @orientation,
+      @renderorder,
+      @compressionlevel,
+      @width,
+      @height,
+      @tilewidth,
+      @tileheight,
+      @hexsidelength,
+      @staggeraxis,
+      @staggerindex,
+      @parallaxoriginx,
+      @parallaxoriginy,
+      @backgroundcolor,
+      @nextlayerid,
+      @nextobjectid,
+      @infinite,
+      @properties,
+      @tilesets,
+      @layers
+    )
     end
 
     def self.load_from_xml(xml : String) : Map

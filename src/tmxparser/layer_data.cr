@@ -9,12 +9,5 @@ module Tmxparser
       @compression = compression
       @data = data
     end
-
-    def self.from_xml(element)
-      encoding = element.attributes["encoding"].text
-      compression = element.attributes["compression"].text
-      data = element.text
-      LayerData.new(encoding, compression, data)
-    end
   end
 end

@@ -1,3 +1,5 @@
+require "./layer_data"
+
 module Tmxparser
   struct Layer
     property name : String
@@ -10,14 +12,6 @@ module Tmxparser
       @width = width
       @height = height
       @layer_data = data
-    end
-
-    def self.from_xml(element)
-      name = element.attributes["name"].text
-      width = element.attributes["width"].text.to_i
-      height = element.attributes["height"].text.to_i
-      layer_data = LayerData.from_xml element.xpath_nodes("//data").first
-      Layer.new(name, width, height, layer_data)
     end
   end
 end
