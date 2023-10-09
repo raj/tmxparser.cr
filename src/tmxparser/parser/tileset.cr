@@ -28,9 +28,6 @@ module Tmxparser::Parser
       puts name
       tile_properties = node.xpath_nodes("//tile").not_nil!
       puts tile_properties.size
-
-      
-
       {
         name: name,
         tilewidth: tilewidth,
@@ -54,8 +51,8 @@ module Tmxparser::Parser
         name = xml["name"]
         tilewidth = xml["tilewidth"].to_i
         tileheight = xml["tileheight"].to_i
-        spacing = xml["spacing"].to_i
-        margin = xml["margin"].to_i
+        spacing = all_attributes.index("spacing") ? xml["spacing"].to_i : 0
+        margin = all_attributes.index("margin") ? xml["margin"].to_i : 0
         image_properties = xml.xpath_nodes("//image").not_nil!
         tileset_images = image_properties.map do |image_property|
           Tmxparser::Parser::Image.from_xml(image_property)

@@ -10,19 +10,21 @@ module Tmxparser::Parser
       compression = element.attributes["compression"].text
       data = decompress_data(element.text, compression, encoding)
       # puts "Decompressed data: #{data}"
-      Tmxparser::LayerData.new(encoding, compression, data)
+      Tmxparser::LayerData.new(encoding, compression, data.join(","))
     end
 
 
-    def self.decompress_data(raw_data : String, compression : String, encoding : String) : String
+    def self.decompress_data(raw_data : String, compression : String, encoding : String) : Array(UInt32)
       clean_data = raw_data.lstrip.rstrip
       # puts "Decompressing data with #{encoding} and #{compression}"
       # puts "Raw data: #{clean_data}"
       if encoding == "base64" && compression == "zlib"
-        return unpack_to_u32(inflate(clean_data)).join(",")
+        # decompressed_data = inflate(clean_data)
+        # puts "Decompressed data: #{decompressed_data}"
+        return decompress_base64(clean_data)
       else
         puts "Unknown encoding #{encoding} or compression #{compression}"
-        return "error"
+        return [UInt32.new(0)]
       end
       # io = IO::Memory.new
 
@@ -50,30 +52,25 @@ module Tmxparser::Parser
     end
 
 
-    def self.inflate(data : String) : String
-      encoded_data = Base64.decode_string(data)
-      # puts "Encoded data: #{encoded_data}"
+    # def self.inflate(data : String) : String
+    #   encoded_data = Base64.decode_string(data)
+    #   # puts "Encoded data: #{encoded_data}"
 
-      io = IO::Memory.new(encoded_data.to_slice)
+    #   io = IO::Memory.new(encoded_data.to_slice)
 
-      Compress::Zlib::Reader.open(io, &.gets_to_end)
-    end
+    #   Compress::Zlib::Reader.open(io, &.gets_to_end)
+    # end
 
-
-    def self.unpack_to_u32(input : String)
-      nums = [] of UInt32 # This is a temporary store
-      io = IO::Memory.new
-
-      input.bytes.each_slice(4) do |this_slice|
-          if this_slice.size == 4
-            this_slice.map do |num|
-              io.write_bytes num.to_u32, IO::ByteFormat::LittleEndian
-            end
-          end
+    def self.decompress_base64(encoded_data) : Array(UInt32)
+      nums = [] of UInt32
+      decoded = Base64.decode_string(encoded_data)
+      io = IO::Memory.new(decoded.to_slice)
+      reader = Compress::Zlib::Reader.open(io, &.gets_to_end)
+      reader.bytes.each_slice(4) do |this_slice|
+        nums << this_slice.first.to_u32
       end
-      # nums
-      io.rewind
-      io.to_s.bytes
+      nums
     end
+
   end
 end
