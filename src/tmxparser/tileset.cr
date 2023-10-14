@@ -1,6 +1,17 @@
 require "./image"
 
 module Tmxparser
+  struct Tile
+    property id : Int32
+    property properties : Array(Hash(String, String))
+    
+    def initialize(
+      @id,
+      @properties = [] of Hash(String, String)
+    )
+    end
+  end
+
   struct Tileset
     property firstgid : Int32
     property source : String?
@@ -32,7 +43,8 @@ module Tmxparser
       @objectalignment = "unspecified",
       @tilerendersize = "tile",
       @fillmode = "stretch",
-      @images = [] of Image
+      @images = [] of Image,
+      @tiles = [] of Tile
     )
     end
   end
