@@ -49,7 +49,6 @@ module Tmxparser::Parser
       if with_external_source
         source = xml["source"]
         tileset_data = from_file(Path.new(path, source).to_s)
-        puts tileset_data
         name = tileset_data[:name]
         tilewidth = tileset_data[:tilewidth]
         tileheight = tileset_data[:tileheight]

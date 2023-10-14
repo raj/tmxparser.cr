@@ -7,7 +7,7 @@ module Tmxparser::Parser
       document = XML.parse(map_xml)
       node = document.xpath_nodes("//map").not_nil!
       all_map_attributes = node.first.attributes.map { |k| k.name }
-      puts "all_map_attributes : #{all_map_attributes}"
+      # puts "all_map_attributes : #{all_map_attributes}"
 
       version = node.first.attributes["version"].text
 

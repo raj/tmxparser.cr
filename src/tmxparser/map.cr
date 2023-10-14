@@ -56,11 +56,11 @@ module Tmxparser
     end
 
     def self.load_from_file(path : String) : Map
-      puts "Loading map from #{path}"
+      # puts "Loading map from #{path}"
       xml = File.read(path)
       map = Tmxparser::Parser::Map.load_from_xml(xml, Path[path].parent.to_s)
-      puts map.version
-      puts map
+      # puts map.version
+      # puts map
       map
     end
   end
