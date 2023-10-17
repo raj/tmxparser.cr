@@ -7,21 +7,19 @@ module Tmxparser::Parser
 
     def self.from_xml(element : XML::Node)
       encoding = element.attributes["encoding"].text
-      compression = element.attributes["compression"].text
+      all_element_attributes = element.attributes.map { |k| k.name }
+      compression = all_element_attributes.includes?("compression") ? element.attributes["compression"].text : "none"
       data = decompress_data(element.text, compression, encoding)
-      # puts "Decompressed data: #{data}"
       Tmxparser::LayerData.new(encoding, compression, data.join(","))
     end
 
 
     def self.decompress_data(raw_data : String, compression : String, encoding : String) : Array(UInt32)
       clean_data = raw_data.lstrip.rstrip
-      # puts "Decompressing data with #{encoding} and #{compression}"
-      # puts "Raw data: #{clean_data}"
       if encoding == "base64" && compression == "zlib"
-        # decompressed_data = inflate(clean_data)
-        # puts "Decompressed data: #{decompressed_data}"
         return decompress_base64(clean_data)
+      elsif encoding == "csv" && compression == "none"
+        return clean_data.split(",").map { |d| d.to_u32 }
       else
         puts "Unknown encoding #{encoding} or compression #{compression}"
         return [UInt32.new(0)]
