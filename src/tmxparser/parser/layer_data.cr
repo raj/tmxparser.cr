@@ -49,16 +49,6 @@ module Tmxparser::Parser
       # end
     end
 
-
-    # def self.inflate(data : String) : String
-    #   encoded_data = Base64.decode_string(data)
-    #   # puts "Encoded data: #{encoded_data}"
-
-    #   io = IO::Memory.new(encoded_data.to_slice)
-
-    #   Compress::Zlib::Reader.open(io, &.gets_to_end)
-    # end
-
     def self.decompress_base64(encoded_data) : Array(UInt32)
       nums = [] of UInt32
       decoded = Base64.decode_string(encoded_data)

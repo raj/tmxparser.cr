@@ -13,11 +13,13 @@ module Tmxparser::Parser
     def self.from_simple_xml(xml : XML::Node)
       node = xml.xpath_nodes("//tileset").not_nil!.first
 
+      all_attributes = node.attributes.map { |a| a.name }
+      # puts all_attributes
 
       name = node.attributes["name"].text
       tilewidth = node.attributes["tilewidth"].text.to_i
       tileheight = node.attributes["tileheight"].text.to_i
-      spacing = node.attributes["spacing"].text.to_i
+      spacing = all_attributes.includes?("spacing") ? node.attributes["spacing"].text.to_i : 0
       # margin = node.attributes["margin"].text.to_i
       image_properties = node.xpath_nodes("//image").not_nil!
       tileset_images = image_properties.map do |image_property|

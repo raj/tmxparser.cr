@@ -3,15 +3,16 @@ require "./spec_helper"
 describe Tmxparser do
   describe "#load tmx" do
     all_files = [
-      # "example.tmx",
-      # "map_csv.tmx",
-      # "map_gzip.tmx",
-      # "map_uncompressed.tmx",
-      # "map_xml.tmx",
-      # "map_zlib.tmx",
-      # "map-isometric-staggered.tmx",
-      # "map-source-tileset.tmx",
-      "sample-map.tmx"
+      "example.tmx",
+      "map_csv.tmx",
+      "map_gzip.tmx",
+      "map_uncompressed.tmx",
+      "map_xml.tmx",
+      "map_zlib.tmx",
+      "map-isometric-staggered.tmx",
+      "map-source-tileset.tmx",
+      "sample-map.tmx",
+      "simple_test.tmx"
     ]
     maps = all_files.map { |file| "spec/fixtures/#{file}" }
     maps.each do |map|
