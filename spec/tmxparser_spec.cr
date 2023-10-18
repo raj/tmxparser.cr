@@ -21,16 +21,14 @@ describe Tmxparser do
         tmx.should be_a(Tmxparser::Map)
       end
     end
+  end
 
-    # it "decode data" do
-    #   encoded_data = "eJzF0sEKACAIA1C1///nCApkTBtdCnZ7NDLDzAbEU9aJncoECbOd60y2ilOM6l7vOu9ijhnsYA5njsaJUd2tLzsv/hddt1cOXb/d2XWDWUxXtgF6"
-    #   decoded_data = Tmxparser::Parser::LayerData.decompress_data(encoded_data, "zlib", "base64")
-    #   expected = [2, 3, 3, 3, 3, 1, 1, 1, 0, 2, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 1, 1, 2, 2, 2, 2, 2, 3, 3, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 3, 3, 2, 2, 2, 2, 1, 2, 2, 3, 3, 2, 1, 2, 2, 2, 1, 2, 2, 3, 3, 1, 1, 1, 2, 1, 2, 2, 3, 1, 1, 1, 1, 2, 2, 1, 2, 2, 3, 1, 1, 1, 1, 2, 1, 2, 2, 3, 3, 1, 1, 1, 1, 2, 1, 1, 3, 3, 3, 1, 1, 1, 1, 2, 1, 3, 3, 3, 3, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 1, 1, 1, 1, 2, 3, 3, 3, 3, 1, 0, 0, 1, 2, 2]
-    #   result = decoded_data == expected
-    #   result.should eq(true)
-    # end
-
-    # TODO : test map attributes
+  describe "#load xml" do
+    it "works" do
+      map = Tmxparser.load_xml("spec/fixtures/sample-map.tmx")
+      puts map.inspect
+      true.should eq(true)
+    end
   end
 
   describe "#load json" do

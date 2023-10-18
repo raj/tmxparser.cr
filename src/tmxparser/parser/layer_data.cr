@@ -10,6 +10,7 @@ module Tmxparser::Parser
       all_element_attributes = element.attributes.map { |k| k.name }
       compression = all_element_attributes.includes?("compression") ? element.attributes["compression"].text : "none"
       data = decompress_data(element.text, compression, encoding)
+
       Tmxparser::LayerData.new(encoding, compression, data.join(","))
     end
 
