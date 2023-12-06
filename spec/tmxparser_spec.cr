@@ -26,10 +26,10 @@ describe Tmxparser do
   describe "#load xml" do
     it "works" do
       map = Tmxparser.load_xml("spec/fixtures/sample-map.tmx")
-      puts map.inspect
-      true.should eq(true)
+      map.layers.size.should eq 2
+      map.layers.first.name.should eq "Terrain"
     end
-  end
+  end 
 
   describe "#load json" do
     it "works" do

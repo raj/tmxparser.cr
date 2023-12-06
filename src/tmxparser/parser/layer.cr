@@ -2,7 +2,6 @@ require "./layer_data"
 
 module Tmxparser::Parser
   struct Layer
-
     def self.from_xml(element : XML::Node)
       name = element.attributes["name"].text
       width = element.attributes["width"].text.to_i
