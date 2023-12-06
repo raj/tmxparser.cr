@@ -47,6 +47,7 @@ module Tmxparser
 
     def source_destination_indexes(
       tileset : Tileset,
+      orientation : Orientation,
     ) : Array(SourceDestination)
 
       source_tw = (tileset.tilewidth || 1)
@@ -64,13 +65,23 @@ module Tmxparser
               w: source_tw,
               h: source_th
             )
-
-            destination_rect = Rectangle.new(
-              x: index_col * source_tw,
-              y: index_row * source_th,
-              w: source_tw,
-              h: source_th
-            )
+            if (orientation == Orientation::Isometric)
+              destination_rect = Rectangle.new(
+                x: (index_col - index_row) * (source_tw / 2).to_i,
+                y: (index_col + index_row) * (source_th / 2).to_i,
+                w: source_tw,
+                h: source_th
+              )
+            elsif (orientation == Orientation::Orthogonal)
+              destination_rect = Rectangle.new(
+                x: index_col * source_tw,
+                y: index_row * source_th,
+                w: source_tw,
+                h: source_th
+              )
+            else
+              raise "Unsupported orientation #{orientation}"
+            end
             all_source_destinations << SourceDestination.new(source_rect, destination_rect)
           end
       end
