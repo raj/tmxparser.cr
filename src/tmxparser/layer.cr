@@ -47,11 +47,6 @@ module Tmxparser
 
     def source_destination_indexes(
       tileset : Tileset,
-      camera_x : Int32,
-      camera_y : Int32,
-      camera_width : Int32,
-      camera_height : Int32,
-      camera_zoom : Int32
     ) : Array(SourceDestination)
 
       source_tw = (tileset.tilewidth || 1)
@@ -70,16 +65,13 @@ module Tmxparser
               h: source_th
             )
 
-            dest_x = index_col * source_tw * camera_zoom
-            dest_y = index_row * source_th * camera_zoom
             destination_rect = Rectangle.new(
-              x: dest_x - camera_x,
-              y: dest_y - camera_y,
-              w: source_tw * camera_zoom,
-              h: source_th * camera_zoom
+              x: index_col * source_tw,
+              y: index_row * source_th,
+              w: source_tw,
+              h: source_th
             )
             all_source_destinations << SourceDestination.new(source_rect, destination_rect)
-            # LibSDL.render_copy(@renderer, texture, pointerof(source_rect), pointerof(destination_rect))
           end
       end
       all_source_destinations
