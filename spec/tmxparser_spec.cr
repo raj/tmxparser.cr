@@ -3,7 +3,7 @@ require "./spec_helper"
 describe Tmxparser do
   describe "#load tmx" do
     all_files = [
-      "example.tmx",
+      "example.tmx", # content for all api
       "map_csv.tmx",
       "map_gzip.tmx",
       "map_uncompressed.tmx",
@@ -34,6 +34,23 @@ describe Tmxparser do
   describe "#load json" do
     it "works" do
       true.should eq(true)
+    end
+  end
+
+  describe "#load api" do
+    it "works" do
+      map = Tmxparser.load_xml("spec/fixtures/example.tmx")
+      map.layers.size.should eq 6
+      map.layers.first.name.should eq "Testing Name 1"
+      map.tilesets.size.should eq 2
+      map.tilesets.first.name.should eq "tmw_desert_spacing"
+      # test animation
+      animation_tileset = map.tilesets.last
+      animation_tileset.name.should eq "torches"
+      animation_tileset.tiles.last.animations.size.should eq 1
+      animation_tileset.tiles.last.animations.first.frames.size.should eq 4
+      # puts animation_tileset.tiles.last.animations.inspect
+
     end
   end
 end

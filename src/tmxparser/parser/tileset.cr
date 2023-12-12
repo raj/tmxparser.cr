@@ -67,8 +67,14 @@ module Tmxparser::Parser
         tileset_images = image_properties.map do |image_property|
           Tmxparser::Parser::Image.from_xml(image_property)
         end
+        xml_tiles = xml.xpath_nodes("//tile").not_nil!
+        if xml_tiles.size > 0
+          tiles = xml_tiles.map do |tile_property|
+            Tmxparser::Parser::Tile.from_xml(tile_property)
+          end
+        end
       end
-      
+
       Tmxparser::Tileset.new(
         firstgid: firstgid,
         source: source,

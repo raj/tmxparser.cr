@@ -1,13 +1,36 @@
 require "./image"
 
 module Tmxparser
+
+  struct AnimationFrame
+    property tileid : Int32
+    property duration : Int32
+    def initialize(
+      @tileid,
+      @duration
+    )
+    end
+  end
+
+  struct Animation
+    property frames : Array(AnimationFrame)
+    def initialize(
+      @frames = [] of AnimationFrame
+    )
+    end
+  end
+
+
   struct Tile
     property id : Int32
     property properties : Array(Hash(String, String))
-    
+    property animations : Array(Animation)
+    # add object_group : ObjectGroup?
+
     def initialize(
       @id,
-      @properties = [] of Hash(String, String)
+      @properties = [] of Hash(String, String),
+      @animations = [] of Animation
     )
     end
   end
@@ -27,6 +50,7 @@ module Tmxparser
     property tilerendersize : String
     property fillmode : String
     property images : Array(Image)
+    property tiles : Array(Tile)
     
 
     def initialize(
