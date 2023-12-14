@@ -31,11 +31,11 @@ describe Tmxparser do
     end
   end 
 
-  describe "#load json" do
-    it "works" do
-      true.should eq(true)
-    end
-  end
+  # describe "#load json" do
+  #   it "works" do
+  #     true.should eq(true)
+  #   end
+  # end
 
   describe "#load api" do
     it "works" do
@@ -44,6 +44,8 @@ describe Tmxparser do
       map.layers.first.name.should eq "Testing Name 1"
       map.tilesets.size.should eq 2
       map.tilesets.first.name.should eq "tmw_desert_spacing"
+      animation_tileset = map.tilesets.last
+      animation_tileset.tiles.size.should eq 1
       # test animation
       animation_tileset = map.tilesets.last
       animation_tileset.name.should eq "torches"

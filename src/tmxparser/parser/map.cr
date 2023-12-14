@@ -5,7 +5,7 @@ module Tmxparser::Parser
   struct Map
     def self.load_from_xml(map_xml : String, path : String) : Tmxparser::Map
       document = XML.parse(map_xml)
-      node = document.xpath_nodes("//map").not_nil!
+      node = document.xpath_nodes("map").not_nil!
       all_map_attributes = node.first.attributes.map { |k| k.name }
       # puts "all_map_attributes : #{all_map_attributes}"
 
@@ -55,21 +55,21 @@ module Tmxparser::Parser
         all_map_attributes.index("infinite") ? node.first.attributes["infinite"].text.to_i == 0 ? false : true : false
 
       properties = document
-        .xpath_nodes("//map/properties/property")
+        .xpath_nodes("map/properties/property")
         .not_nil!
         .map do |property|
           { property.attributes["name"].text => property.attributes["value"].text }
         end
 
       tilesets = document
-        .xpath_nodes("//map/tileset")
+        .xpath_nodes("map/tileset")
         .not_nil!
         .map do |tileset|
           Tmxparser::Parser::Tileset.from_xml(tileset, path)
         end
 
       layers = document
-        .xpath_nodes("//map/layer")
+        .xpath_nodes("map/layer")
         .not_nil!
         .map do |layer|
           Tmxparser::Parser::Layer.from_xml(layer)
