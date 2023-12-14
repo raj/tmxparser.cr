@@ -45,17 +45,13 @@ module Tmxparser
       layer_data.data.split(",").map { |x| begin x.to_i rescue 0 end }
     end
 
-    def source_destination_indexes(
-      tileset : Tileset,
-      orientation : Orientation,
-    ) : Array(SourceDestination)
-
+    def source_destination_indexes(tileset : Tileset, orientation : Orientation) : Array(SourceDestination)
       source_tw = (tileset.tilewidth || 1)
       source_th = (tileset.tileheight || 1)
 
       all_source_destinations = [] of SourceDestination
       all_data
-        .map { |x| source_rect_from_tilenumber(tileset,x) }
+        .map { |x| tileset.source_rect_from_tilenumber(x) }
         .each_slice(@width).each_with_index do |row_textures, index_row|
           row_textures.each_with_index do |texture_source, index_col|
             next if texture_source[0] == -1
@@ -86,22 +82,6 @@ module Tmxparser
           end
       end
       all_source_destinations
-    end
-
-    def source_rect_from_tilenumber(tileset : Tileset, tile_number : Int32) : Array(Int32) # [Int32, Int32]
-      image_width = tileset.images.first.width
-      if (tile_number == 0)
-        return [-1, -1]
-      end
-      columns = ((image_width + (tileset.spacing || 0)) / ((tileset.tilewidth || 1) + (tileset.spacing || 0))).to_i
-      position_x = tile_number % columns == 0 ? columns : tile_number % columns
-      position_x = tile_number <= columns ? tile_number : position_x
-      position_y = tile_number % columns == 0 ? (tile_number / columns).to_i : (tile_number / columns).to_i + 1
-      position_y = tile_number <= columns ? 1 : position_y
-      [
-        (position_x - 1) * (tileset.tilewidth || 1) + (position_x - 1) * (tileset.spacing || 0),
-        (position_y - 1) * (tileset.tileheight || 1) + (position_y - 1) * (tileset.spacing || 0),
-      ]
     end
   end
 end
