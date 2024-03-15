@@ -45,13 +45,34 @@ module Tmxparser
       layer_data.data.split(",").map { |x| begin x.to_i rescue 0 end }
     end
 
-    def source_destination_indexes(tileset : Tileset, orientation : Orientation) : Array(SourceDestination)
+    def source_destination_indexes(tileset : Tileset, orientation : Orientation, tick : UInt64 = 0) : Array(SourceDestination)
       source_tw = (tileset.tilewidth || 1)
       source_th = (tileset.tileheight || 1)
+      tile_offset = 0
+
+      # this works for tilesets with only one tile animation
+      is_tileset_animations = tileset.tiles.size == 1 && tileset.tiles[0].animations.size > 0
+      if is_tileset_animations
+        animation_duration = tileset.tiles[0].animations.first.frames.map { |x| x.duration }.sum
+        tick = tick % animation_duration
+        duration_count = 0
+        frame_count = tileset.tiles[0].animations.first.frames
+        puts "frame_count: #{frame_count.inspect}"
+        tileset.tiles[0].animations.first.frames.each do |frame|
+          duration_count += frame.duration
+          if tick <= duration_count
+            break
+          end
+          tile_offset = frame.tileid
+        end
+      end
 
       all_source_destinations = [] of SourceDestination
       all_data
-        .map { |x| tileset.source_rect_from_tilenumber(x) }
+        .map { |x|
+          tile_number = x == 0 ? 0 : x - tileset.firstgid.to_i + 1 + tile_offset
+          tileset.source_rect_from_tilenumber(tile_number) 
+        }
         .each_slice(@width).each_with_index do |row_textures, index_row|
           row_textures.each_with_index do |texture_source, index_col|
             next if texture_source[0] == -1

@@ -53,6 +53,12 @@ describe Tmxparser do
       animation_tileset.tiles.last.animations.first.frames.size.should eq 4
       # puts animation_tileset.tiles.last.animations.inspect
 
+      map.layers.each do |layer|
+        puts layer.inspect
+      end
+      map.tilesets.each do |tileset|
+        puts tileset.inspect
+      end
     end
   end
 end

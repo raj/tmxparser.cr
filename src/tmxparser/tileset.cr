@@ -77,6 +77,11 @@ module Tmxparser
       if (tile_number == 0)
         return [-1, -1]
       end
+
+      # if name == "torches"
+      #   puts "firstgid: #{firstgid} , tile_number : #{tile_number}"
+      #   return [0, 0]
+      # end
       columns = ((image_width + (spacing || 0)) / ((tilewidth || 1) + (spacing || 0))).to_i
       position_x = tile_number % columns == 0 ? columns : tile_number % columns
       position_x = tile_number <= columns ? tile_number : position_x
@@ -87,6 +92,5 @@ module Tmxparser
         (position_y - 1) * (tileheight || 1) + (position_y - 1) * (spacing || 0),
       ]
     end
-
   end
 end
