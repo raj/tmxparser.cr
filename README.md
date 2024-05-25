@@ -36,4 +36,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [raj deenoo](https://github.com/your-github-user) - creator and maintainer
+- [raj deenoo](https://github.com/raj) - creator and maintainer
