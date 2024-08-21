@@ -56,8 +56,8 @@ module Tmxparser
         animation_duration = tileset.tiles[0].animations.first.frames.map { |x| x.duration }.sum
         tick = tick % animation_duration
         duration_count = 0
-        frame_count = tileset.tiles[0].animations.first.frames
-        puts "frame_count: #{frame_count.inspect}"
+        # frame_count = tileset.tiles[0].animations.first.frames
+        # puts "frame_count: #{frame_count.inspect}"
         tileset.tiles[0].animations.first.frames.each do |frame|
           duration_count += frame.duration
           if tick <= duration_count
@@ -90,6 +90,7 @@ module Tmxparser
                 h: source_th
               )
             elsif (orientation == Orientation::Orthogonal)
+              # puts "Orthogonal index_col: #{index_col},  x: #{index_col * source_tw}, y: #{index_row * source_th}, w: #{source_tw}, h: #{source_th}"
               destination_rect = Rectangle.new(
                 x: index_col * source_tw,
                 y: index_row * source_th,
